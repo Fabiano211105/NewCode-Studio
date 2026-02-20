@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NewCode Studio - Soluções Tecnológicas</title>
+    <link rel="icon" type="image/x-icon" href="imagens/logo-azul.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Space Grotesk', 'sans-serif'],
+            },
+            colors: {
+              primary: '#02213d', 
+              secondary: '#cfcfcf',
+              accent: '#f59e0b',
+              light: '#f8fafc',
+              dark: '#0f172a',
+            },
+            animation: {
+              'gradient-x': 'gradient-x 3s ease infinite',
+            },
+            keyframes: {
+              'gradient-x': {
+                '0%, 100%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'left center'
+                },
+                '50%': {
+                  'background-size': '200% 200%',
+                  'background-position': 'right center'
+                },
+              },
+            }
+          }
+        }
+      }
+    </script>
+
+    <!-- Custom Styles for Animations & Scrollbar -->
+    <style>
+      body {
+        background-color: #ffffff;
+        color: #475569;
+        overflow-x: hidden;
+      }
+      
+      /* Smooth Scroll behavior */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* Scroll Reveal Animation Classes */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Delay utilities for grid items */
+      .delay-100 { transition-delay: 100ms; }
+      .delay-200 { transition-delay: 200ms; }
+      .delay-300 { transition-delay: 300ms; }
+      .delay-400 { transition-delay: 400ms; }
+      .delay-500 { transition-delay: 500ms; }
+
+      /* Loader Animation */
+      .loader {
+        border: 3px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top: 3px solid #ffffff;
+        width: 20px;
+        height: 20px;
+        -webkit-animation: spin 1s linear infinite; /* Safari */
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+
+    <!-- Import Map for Google GenAI SDK -->
+    <script type="importmap">
+    {
+      "imports": {
+        "@google/genai": "https://esm.sh/@google/genai@^1.41.0"
+      }
+    }
+    </script>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0, 0)">
+                    <div class="#">
+                    </div>
+                    <span class="font-display font-bold text-xl tracking-wide text-primary">
+                        NewCode Studio</span>
+                    </span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#services" class="text-gray-600 hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Serviços</a>
+                        <a href="#portfolio" class="text-gray-600 hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Portfólio</a>
+                        <a href="#about" class="text-gray-600 hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Sobre</a>
+                        <a href="#founder" class="text-gray-600 hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Fundador</a>
+                        <a href="https://wa.me/5521985310613?text=Olá! Gostaria de fazer um orçamento." 
+                          target="_blank" 
+                         class="bg-primary text-white px-6 py-2.5 rounded-full font-bold hover:bg-primary/90 transition-all transform hover:scale-105 shadow-lg shadow-primary/20">
+                              Falar no WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-primary hover:bg-gray-100 focus:outline-none">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100 shadow-xl">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#services" class="text-gray-600 hover:text-primary block px-3 py-2 rounded-md text-base font-medium mobile-link">Serviços</a>
+                <a href="#portfolio" class="text-gray-600 hover:text-primary block px-3 py-2 rounded-md text-base font-medium mobile-link">Portfólio</a>
+                <a href="#about" class="text-gray-600 hover:text-primary block px-3 py-2 rounded-md text-base font-medium mobile-link">Sobre</a>
+                <a href="#founder" class="text-gray-600 hover:text-primary block px-3 py-2 rounded-md text-base font-medium mobile-link">Fundador</a>
+                <a href="https://wa.me/5521985310613?text=Olá! Gostaria de fazer um orçamento." 
+                    target="_blank" 
+                   class="block w-full text-center mt-4 bg-primary text-white px-5 py-3 rounded-lg font-bold mobile-link">
+                           Falar no WhatsApp
+                      </a>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-white">
+        <div class="container mx-auto px-4 z-10 relative">
+            <div class="text-center max-w-5xl mx-auto">
+                
+                <div class="reveal inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-gray-200 bg-white/50 backdrop-blur-sm shadow-sm">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-gray-600 text-sm font-semibold tracking-wider uppercase">Agenda aberta para novos projetos</span>
+                </div>
+                
+                <h1 class="reveal delay-100 text-4xl md:text-7xl lg:text-8xl font-display font-bold text-primary leading-[1.1] mb-8">
+                    Tecnologia encontra <br />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary animate-gradient-x">
+                        Criatividade Visual
+                    </span>
+                </h1>
+
+                <p class="reveal delay-200 text-xl text-gray-500 mb-10 max-w-3xl mx-auto leading-relaxed">
+                    A NewCode Studio é o seu parceiro completo. Criamos 
+                    <span class="text-primary font-semibold"> Sites</span>, 
+                    <span class="text-primary font-semibold"> Identidades Visuais</span> impactantes e produções de 
+                    <span class="text-primary font-semibold"> Vídeo</span> que elevam sua marca a outro nível.
+                </p>
+
+                <div class="reveal delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
+    <a href="https://wa.me/5521985310613?text=Olá! Gostaria de fazer um orçamento." 
+       target="_blank" 
+       class="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2 group shadow-xl shadow-primary/20">
+        Falar no WhatsApp
+        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+    </a>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 md:py-24 bg-light relative">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="reveal text-3xl md:text-5xl font-display font-bold text-primary mb-4">
+                    O Que Fazemos de Melhor
+                </h2>
+                <p class="reveal delay-100 text-gray-500 max-w-2xl mx-auto text-lg">
+                    Somos um estúdio multidisciplinar. Unimos código, design e vídeo para criar experiências completas.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="reveal delay-100 bg-white border border-gray-100 p-8 rounded-2xl hover:border-secondary/30 transition-all group cursor-default shadow-xl shadow-gray-200/50 hover:-translate-y-2">
+                    <div class="bg-primary/5 w-16 h-16 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                        <i data-lucide="globe" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Sites</h3>
+                    <p class="text-gray-500 leading-relaxed">Desenvolvimento de sites modernos, institucionais e e-commerce com alta performance.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="reveal delay-200 bg-white border border-gray-100 p-8 rounded-2xl hover:border-secondary/30 transition-all group cursor-default shadow-xl shadow-gray-200/50 hover:-translate-y-2">
+                    <div class="bg-primary/5 w-16 h-16 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                        <i data-lucide="mouse-pointer-click" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Landing Pages</h3>
+                    <p class="text-gray-500 leading-relaxed">Páginas focadas em conversão, copywriting persuasivo e design que vende.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="reveal delay-300 bg-white border border-gray-100 p-8 rounded-2xl hover:border-secondary/30 transition-all group cursor-default shadow-xl shadow-gray-200/50 hover:-translate-y-2">
+                    <div class="bg-primary/5 w-16 h-16 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                        <i data-lucide="palette" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Identidade Visual</h3>
+                    <p class="text-gray-500 leading-relaxed">Logotipos, branding completo e manuais de marca para destacar sua empresa.</p>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="reveal delay-100 bg-white border border-gray-100 p-8 rounded-2xl hover:border-secondary/30 transition-all group cursor-default shadow-xl shadow-gray-200/50 hover:-translate-y-2">
+                    <div class="bg-primary/5 w-16 h-16 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                        <i data-lucide="video" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Filmagem</h3>
+                    <p class="text-gray-500 leading-relaxed">Produção audiovisual profissional, comerciais e captação de imagem em alta definição.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-16 md:py-24 bg-white relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent opacity-10"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="reveal text-3xl md:text-5xl font-display font-bold text-primary mb-4">
+                    Nossos Projetos
+                </h2>
+                <p class="reveal delay-100 text-gray-500 max-w-2xl mx-auto text-lg">
+                    Conheça alguns dos trabalhos desenvolvidos pela NewCode Studio.
+                </p>
+            </div>
+
+            <!-- Carousel Container -->
+            <div class="reveal delay-200 relative max-w-5xl mx-auto">
+                <div class="overflow-hidden rounded-2xl shadow-2xl bg-gray-50 border border-gray-100 relative group">
+                    
+                    <!-- Carousel Slides -->
+                    <div id="carousel-track" class="flex transition-transform duration-500 ease-out h-[400px] md:h-[700px]">
+                        
+                        <!-- Slide 1 -->
+                  <div class="min-w-full h-full relative flex flex-col">
+    <div class="h-[50%] md:h-2/3 bg-gray-200 relative overflow-hidden">
+        <img src="imagens/Site-RP.png" alt="Project 1" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+    </div>
+
+    <div class="h-[50%] md:h-1/3 bg-white p-6 pb-14 md:p-8 flex flex-col justify-between">
+        <div>
+            <h3 class="text-xl md:text-2xl font-bold text-primary mb-1">RP+ Light Steel Frame</h3>
+            <p class="text-gray-500 text-sm md:text-base line-clamp-2">
+                A RP+ é especialista em soluções de Light Steel Frame, atuando na construção civil.
+            </p>
+        </div>
+        
+        <div class="mt-2">
+            <a href="https://rplightsteelframe.com/" target="_blank" class="inline-flex items-center justify-center w-full sm:w-fit px-6 py-3 bg-[#001f3f] text-white font-bold rounded-lg shadow-sm">
+                Ver Projeto
+            </a>
+        </div>
+    </div>
+</div>
+
+                        <!-- Slide 2 -->
+                       <div class="min-w-full h-full relative flex flex-col">
+    <div class="h-[50%] md:h-2/3 bg-gray-200 relative overflow-hidden">
+        <img src="imagens/site-adorai-church.png" alt="Project 1" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+    </div>
+
+    <div class="h-[50%] md:h-1/3 bg-white p-6 pb-14 md:p-8 flex flex-col justify-between">
+        <div>
+            <h3 class="text-xl md:text-2xl font-bold text-primary mb-1">Projeto Adorai Church</h3>
+            <p class="text-gray-500 text-sm md:text-base line-clamp-2">
+            O Projeto Adorai Church é uma comunidade de fé que tem como missão transformar vidas através de Cristo.
+            </p>
+        </div>
+        
+        <div class="mt-2">
+            <a href="https://fabiano211105.github.io/Adorai-Church/" target="_blank" class="inline-flex items-center justify-center w-full sm:w-fit px-6 py-3 bg-[#001f3f] text-white font-bold rounded-lg shadow-sm">
+                Ver Projeto
+            </a>
+        </div>
+    </div>
+</div>
+<div class="min-w-full h-full relative flex flex-col">
+    <div class="h-[50%] md:h-2/3 bg-gray-200 relative overflow-hidden">
+        <img src="imagens/site-newcode.png" alt="Project 1" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+    </div>
+
+    <div class="h-[50%] md:h-1/3 bg-white p-6 pb-14 md:p-8 flex flex-col justify-between">
+        <div>
+            <h3 class="text-xl md:text-2xl font-bold text-primary mb-1">NewCode Studio</h3>
+            <p class="text-gray-500 text-sm md:text-base line-clamp-2">
+                A NewCode Studio é especialista em soluções tecnológicas, atuando de forma criativa e profissional.
+            </p>
+        </div>
+        
+        <div class="mt-2">
+            <a href="https://fabiano211105.github.io/NewCode-Studio/" target="_blank" class="inline-flex items-center justify-center w-full sm:w-fit px-6 py-3 bg-[#001f3f] text-white font-bold rounded-lg shadow-sm">
+                Ver Projeto
+            </a>
+        </div>
+    </div>
+</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Controls -->
+                    <button id="prev-slide" class="absolute left-4 top-1/3 -translate-y-1/2 bg-white/80 hover:bg-white text-primary p-3 rounded-full shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
+                        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                    </button>
+                    <button id="next-slide" class="absolute right-4 top-1/3 -translate-y-1/2 bg-white/80 hover:bg-white text-primary p-3 rounded-full shadow-lg backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+
+                    <!-- Indicators -->
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+                        <button class="indicator w-2 h-2 rounded-full bg-primary transition-all" data-index="0"></button>
+                        <button class="indicator w-2 h-2 rounded-full bg-gray-300 transition-all" data-index="1"></button>
+                        <button class="indicator w-2 h-2 rounded-full bg-gray-300 transition-all" data-index="2"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 md:py-24 bg-light relative">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-primary to-secondary rounded-2xl opacity-10 blur-lg"></div>
+                    <img 
+                        src="imagens/newcode-mockup.jpeg" 
+                        alt="Creative Studio" 
+                        class="relative rounded-2xl shadow-2xl border border-white w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    />
+                </div>
+
+                <div class="reveal delay-200">
+                    <h2 class="text-3xl md:text-5xl font-display font-bold text-primary mb-6">
+                        Tecnologia e estratégia, <br />
+                        <span class="text-secondary">Tudo em um só lugar.</span>
+                    </h2>
+                    
+                    <div class="space-y-6 text-gray-600 text-lg">
+                        <p>
+                        Na NewCode Studio, não desenvolvemos apenas projetos digitais. Criamos experiências que unem código, design e visão estratégica.
+
+                        </p>
+                        <p>
+Cada solução nasce com propósito: performance, estrutura e crescimento. Seja um sistema inteligente, uma plataforma personalizada ou uma presença digital de alto nível, tudo é pensado para posicionar sua marca à frente.                       </p>
+                        <p>
+                            Não entregamos apenas tecnologia. Entregamos direção.
+                        </p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section id="founder" class="py-16 md:py-32 bg-white relative overflow-hidden">
+        <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-20 left-0 w-[300px] h-[300px] bg-secondary/5 rounded-full blur-[80px] pointer-events-none"></div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                
+                <!-- Image Column -->
+                <div class="reveal w-full lg:w-5/12 relative">
+                    <div class="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 group">
+                        <div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors duration-500 z-10 mix-blend-multiply"></div>
+                        <img 
+                            src="imagens/ceo-new-code.jpeg" 
+                            alt="Fabiano Simes - Fundador" 
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0"
+                        />
+                        
+                        <!-- Overlay Card -->
+                        <div class="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-6 rounded-xl border border-white/20 shadow-lg z-20">
+                            <h3 class="text-xl font-display font-bold text-primary">Fabiano Simes</h3>
+                            <p class="text-sm text-secondary font-medium tracking-wider uppercase mb-4">CEO & Diretor Criativo</p>
+                            <div class="flex gap-4">
+                                <a href="https://www.linkedin.com/in/fabiano-simes" class="text-gray-400 hover:text-primary transition-colors">
+                                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                                </a>
+                                <a href="https://www.instagram.com/fabian_o15/" class="text-gray-400 hover:text-primary transition-colors">
+                                    <i data-lucide="instagram" class="w-5 h-5"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute -top-4 -left-4 w-full h-full border-2 border-primary/10 rounded-2xl -z-10"></div>
+                    <div class="absolute -bottom-4 -right-4 w-full h-full bg-gray-50 rounded-2xl -z-20"></div>
+                </div>
+
+                <!-- Content Column -->
+                <div class="reveal delay-200 w-full lg:w-7/12">
+                    <i data-lucide="quote" class="w-16 h-16 text-primary/10 mb-8"></i>
+                    
+                    <h2 class="text-4xl md:text-6xl font-display font-bold text-primary mb-8 leading-tight">
+                        A tecnologia deve <br />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary animate-gradient-x">
+                            servir à imaginação.
+                        </span>
+                    </h2>
+
+                    <div class="space-y-6 text-lg text-gray-500 leading-relaxed font-light">
+                        <p>
+                            Fabiano Simes é fundador da NewCode Studio e Diretor de Comunicações em uma ONG, atuando com estratégia, tecnologia e posicionamento institucional. Acadêmico de Gestão de Tecnologia da Informação, aprovado em 1º lugar pelo ProUni em sua instituição, une conhecimento técnico e visão empreendedora para desenvolver soluções digitais modernas e funcionais.
+                        </p>
+                        <p>
+                            Na NewCode Studio, lidera a criação de sites, plataformas e soluções tecnológicas personalizadas, sempre com foco em estrutura, performance e crescimento. Sua atuação conecta inovação, organização e impacto, tanto no setor empresarial quanto no social.
+                        </p>
+                    </div>
+
+                    <div class="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-8">
+                        <div class="bg-gray-50 px-6 py-4 rounded-lg border border-gray-100">
+                            <span class="block text-3xl font-bold text-primary mb-1">03+</span>
+                            <span class="text-xs text-gray-400 uppercase tracking-wider">Anos de Experiência</span>
+                        </div>
+                        
+                        <a href="#contact" class="group inline-flex items-center gap-2 text-primary font-bold hover:text-secondary transition-colors">
+                            Vamos conversar sobre seu projeto
+                            <i data-lucide="arrow-up-right" class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-24 bg-primary relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-[128px] transform translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-[128px] transform -translate-x-1/2 translate-y-1/2"></div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="reveal text-4xl md:text-6xl font-display font-bold text-white mb-6">
+                    Pronto para transformar <br/> sua visão em realidade?
+                </h2>
+                <p class="reveal delay-100 text-gray-300 text-xl mb-12 max-w-2xl mx-auto">
+                    Não perca tempo com formulários longos. Fale diretamente com a gente no WhatsApp e receba um atendimento prioritário.
+                </p>
+
+                <div class="reveal delay-200">
+                    <a 
+                        href="https://wa.me/5521985310613?text=Olá,%20gostaria%20de%20fazer%20um%20orçamento%20com%20a%20NewCode%20Studio."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-3 bg-white hover:bg-gray-100 text-primary text-xl font-bold py-6 px-12 rounded-full shadow-2xl transition-all transform hover:-translate-y-1 hover:shadow-white/20"
+                    >
+                        <i data-lucide="message-circle" class="w-8 h-8"></i>
+                        Chamar no WhatsApp Agora
+                    </a>
+                </div>
+
+                <div class="reveal delay-300 mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 justify-center text-left max-w-2xl mx-auto">
+                    <div class="flex items-center gap-4 bg-white/5 p-6 rounded-xl border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                        <div class="bg-secondary/20 p-3 rounded-lg text-secondary">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold">Email</h4>
+                            <p class="text-gray-400">Studionewcode@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 bg-white/5 p-6 rounded-xl border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                        <div class="bg-accent/20 p-3 rounded-lg text-accent">
+                            <i data-lucide="map-pin" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-semibold">Escritório</h4>
+                            <p class="text-gray-400">Av. Rio Branco, 151 - RJ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark border-t border-white/5 pt-16 pb-8 text-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="#">
+                        </div>
+                        <span class="font-display font-bold text-xl text-white">
+                            NewCode Studio</span>
+                        </span>
+                    </div>
+                    <p class="text-gray-400 max-w-sm mb-6">
+                        Transformando o futuro digital com inovação, tecnologia de ponta e design excepcional. 
+                        Sua visão, nossa expertise.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.linkedin.com/in/fabiano-simes" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="https://www.instagram.com/newcode_studio/" class="text-gray-400 hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Empresa</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:text-secondary transition-colors">Sobre Nós</a></li>
+                        <li><a href="#services" class="text-gray-400 hover:text-secondary transition-colors">Serviços</a></li>
+                        <li><a href="#founder" class="text-gray-400 hover:text-secondary transition-colors">Fundador</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="privacidade-e-termos.html" class="text-gray-400 hover:text-secondary transition-colors">Privacidade e termos</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-secondary transition-colors">Contato</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 pt-8 text-center">
+                <p class="text-gray-500 text-sm">
+                    &copy; 2026 NewCode Studio. Todos os direitos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Navbar Scroll Logic
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-sm');
+                navbar.classList.remove('bg-transparent');
+            } else {
+                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-sm');
+                navbar.classList.add('bg-transparent');
+            }
+        });
+
+        // Mobile Menu Logic
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const links = document.querySelectorAll('.mobile-link');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Scroll Animation Logic (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Carousel Logic
+        const track = document.getElementById('carousel-track');
+        const prevBtn = document.getElementById('prev-slide');
+        const nextBtn = document.getElementById('next-slide');
+        const indicators = document.querySelectorAll('.indicator');
+        let currentIndex = 0;
+        const totalSlides = 3;
+
+        function updateCarousel() {
+            const offset = currentIndex * -100;
+            track.style.transform = `translateX(${offset}%)`;
+            
+            indicators.forEach((ind, i) => {
+                if (i === currentIndex) {
+                    ind.classList.add('bg-primary');
+                    ind.classList.remove('bg-gray-300');
+                } else {
+                    ind.classList.remove('bg-primary');
+                    ind.classList.add('bg-gray-300');
+                }
+            });
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        });
+
+        indicators.forEach(ind => {
+            ind.addEventListener('click', (e) => {
+                currentIndex = parseInt(e.target.dataset.index);
+                updateCarousel();
+            });
+        });
+
+        // Auto-play (optional)
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        }, 5000);
+
+    </script>
+</body>
+</html>

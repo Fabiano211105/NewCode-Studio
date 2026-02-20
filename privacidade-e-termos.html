@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NewCode Studio - Legal</title>
+    <link rel="icon" type="image/png" href="imagens/logo-azul.png">
+    <link rel="apple-touch-icon" href="imagens/logo-azul.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                500: '#0f172a',
+                600: '#0f172a',
+                700: '#a6a6a6',
+                900: '#a6a6a6',
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+      }
+      /* Animações simples para substituir o animate-in do Tailwind plugin */
+      .fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react/": "https://esm.sh/react@^19.2.4/"
+  }
+}
+</script>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-brand-100 selection:text-brand-900">
+
+    <!-- Header -->
+   <header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="font-display font-bold text-xl tracking-wide text-primary">
+                NewCode <span class="text-secondary">Studio</span>
+            </span>
+        </div>
+        <nav class="hidden sm:flex gap-6 text-sm font-medium text-slate-600">
+            <a href="index.html" class="hover:text-brand-600 transition-colors">Home</a>
+        </nav>
+    </div>
+</header>
+
+    <!-- Hero Section -->
+    <div class="bg-white border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">
+                Central Legal
+            </h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                Transparência e clareza sobre como cuidamos dos seus dados e as regras para uso dos nossos serviços.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        
+        <!-- Tab Navigation -->
+        <div class="flex justify-center mb-10">
+            <div class="bg-slate-100 p-1 rounded-xl inline-flex shadow-inner">
+                <button
+                    id="btn-privacy"
+                    onclick="switchTab('privacy')"
+                    class="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 bg-white text-brand-600 shadow-sm ring-1 ring-slate-200"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Política de Privacidade
+                </button>
+                <button
+                    id="btn-terms"
+                    onclick="switchTab('terms')"
+                    class="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Termos de Uso
+                </button>
+            </div>
+        </div>
+
+        <!-- Dynamic Content Container -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-10 min-h-[400px]">
+            
+            <!-- Privacy Content -->
+            <div id="content-privacy" class="fade-in">
+                <div class="mb-8 border-b border-slate-200 pb-6">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Política de Privacidade</h2>
+                    <p class="text-slate-500">Última atualização: Janeiro de 2026</p>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">1. Introdução</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>A NewCode Studio preza pela simplicidade e transparência. Esta Política de Privacidade descreve como tratamos as informações em nosso site. Como um estúdio focado em direção criativa com IA, nosso site serve principalmente como portfólio e ponto de contato.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">2. Coleta de Dados</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p><strong>Nós não coletamos dados pessoais de visitantes.</strong> Nosso site é estático e informativo.</p>
+                        <ul class="list-disc pl-5 space-y-2 mt-2">
+                            <li>Não solicitamos criação de contas ou login.</li>
+                            <li>Não utilizamos formulários de cadastro que armazenam dados em servidores.</li>
+                            <li>Não coletamos endereços IP para fins de rastreamento de usuários individuais.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">3. Cookies e Rastreamento</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Não utilizamos cookies de marketing, rastreadores de terceiros ou ferramentas de analytics que identifiquem você pessoalmente. Sua navegação pelo nosso portfólio é privada e anônima.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">4. Contato</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Caso você opte por entrar em contato conosco através de links de e-mail (mailto) disponíveis no site, teremos acesso apenas ao endereço de e-mail e às informações que você decidir compartilhar na mensagem. Estes dados serão utilizados <strong>exclusivamente para responder ao seu contato</strong> e não serão compartilhados com terceiros ou usados para listas de marketing sem seu consentimento explícito.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">5. Segurança</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Embora não coletemos dados sensíveis pelo site, adotamos boas práticas de segurança digital para manter nossa infraestrutura protegida.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">6. Alterações</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Podemos atualizar esta política caso haja mudanças na estrutura do site, mas manteremos o compromisso com a privacidade e a minimização de dados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terms Content -->
+            <div id="content-terms" class="hidden fade-in">
+                <div class="mb-8 border-b border-slate-200 pb-6">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Termos de Uso</h2>
+                    <p class="text-slate-500">Última atualização: Janeiro de 2026</p>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">1. Visão Geral</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Bem-vindo à NewCode Studio. Somos um estúdio de inovação que utiliza um <strong>Diretor Criativo com Inteligência Artificial</strong> para desenvolver projetos únicos. Ao acessar nosso site, você concorda com estes termos.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">2. Uso do Conteúdo</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Todo o material apresentado neste site (imagens, textos, conceitos e códigos) é de propriedade da NewCode Studio, salvo indicação em contrário.</p>
+                        <p class="mt-2">Você pode visualizar e compartilhar nosso portfólio para fins pessoais e não comerciais. A cópia, reprodução ou uso comercial de nossos projetos e metodologia de IA sem autorização prévia é proibida.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">3. Natureza dos Serviços</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Nossos serviços envolvem o uso de tecnologias experimentais e generativas (Inteligência Artificial). O site serve como vitrine para essas capacidades. Não garantimos que as demonstrações aqui presentes estarão disponíveis ininterruptamente.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">4. Isenção de Responsabilidade</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Este site é fornecido "como está". Não nos responsabilizamos por eventuais instabilidades técnicas ou por interpretações equivocadas sobre a natureza dos nossos serviços baseados em IA.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">5. Links Externos</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Podemos incluir links para plataformas de terceiros (GitHub, LinkedIn, redes sociais). Não controlamos nem nos responsabilizamos pelo conteúdo ou políticas desses sites externos.</p>
+                    </div>
+                </div>
+
+                <div class="mb-8 last:mb-0">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3 flex items-center">6. Legislação</h3>
+                    <div class="text-slate-600 leading-relaxed space-y-4">
+                        <p>Estes termos são regidos pelas leis da República Federativa do Brasil.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-8 mt-auto">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2 text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                <span class="text-sm">© <span id="year"></span> NewCode Studio. Todos os direitos reservados.</span>
+            </div>
+            <div class="flex gap-6 text-sm text-slate-500">
+                <button onclick="switchTab('privacy')" class="hover:text-brand-600 transition-colors">Privacidade</button>
+                <button onclick="switchTab('terms')" class="hover:text-brand-600 transition-colors">Termos</button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const activeBtnClasses = 'bg-white text-brand-600 shadow-sm ring-1 ring-slate-200'.split(' ');
+        const inactiveBtnClasses = 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'.split(' ');
+
+        function switchTab(tab) {
+            const privacyContent = document.getElementById('content-privacy');
+            const termsContent = document.getElementById('content-terms');
+            const privacyBtn = document.getElementById('btn-privacy');
+            const termsBtn = document.getElementById('btn-terms');
+
+            // Reset logic
+            privacyContent.classList.add('hidden');
+            termsContent.classList.add('hidden');
+            
+            privacyBtn.classList.remove(...activeBtnClasses);
+            termsBtn.classList.remove(...activeBtnClasses);
+            
+            privacyBtn.classList.add(...inactiveBtnClasses);
+            termsBtn.classList.add(...inactiveBtnClasses);
+
+            // Activate logic
+            if (tab === 'privacy') {
+                privacyContent.classList.remove('hidden');
+                privacyBtn.classList.remove(...inactiveBtnClasses);
+                privacyBtn.classList.add(...activeBtnClasses);
+            } else {
+                termsContent.classList.remove('hidden');
+                termsBtn.classList.remove(...inactiveBtnClasses);
+                termsBtn.classList.add(...activeBtnClasses);
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
